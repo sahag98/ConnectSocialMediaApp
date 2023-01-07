@@ -19,7 +19,7 @@ const Login = () => {
                     <input className='rounded-xl bg-[#E7E7E7] p-3 outline-none' placeholder='Enter Username' type="text" />
                     <input className='rounded-xl bg-[#E7E7E7] p-3 outline-none' placeholder='Enter Password' type="password" />
                     <p className='text-center'>New here?
-                        <Link to='/'>
+                        <Link to='/register'>
                             <b className='cursor cursor-pointer'> Sign Up</b>
                         </Link>
                     </p>
