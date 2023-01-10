@@ -24,6 +24,10 @@ app.use("/api/users", userRoute)
 app.use("/api/auth", authRoute)
 app.use("/api/posts", postRoute)
 
+app.get("/api/v1", (req, res) => {
+  res.send("hello !!!!");
+});
+
 app.listen(8800, () => {
   console.log("Backend is running")
 })

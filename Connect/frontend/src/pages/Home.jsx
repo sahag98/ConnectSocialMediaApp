@@ -1,19 +1,24 @@
 import React, { useState } from 'react'
 import Navbar from '../components/Navbar'
-import Posts from '../components/Posts'
+import Feed from '../components/Feed'
 import { Routes, Route } from 'react-router-dom';
 import Search from '../components/Search';
+import Share from '../components/Share';
+import Profile from './Profile';
+import { Data } from '../utils/Data';
 
 const Home = () => {
     const [searchTerm, setSearchTerm] = useState('')
     return (
-        <div className='px-2'>
+        <div className=''>
             <div>
                 <Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
             </div>
             <div className='h-full'>
                 <Routes>
-                    <Route path="/" element={<Posts />} />
+                    <Route path="/" element={<Feed />} />
+                    <Route path="/share" element={<Share />} />
+                    <Route path="/profile:username" element={<Profile />} />
                     <Route path="/search" element={<Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />} />
                 </Routes>
             </div>

@@ -5,13 +5,12 @@ import { RxHamburgerMenu } from 'react-icons/rx'
 import { AiOutlineClose, AiOutlinePlusCircle } from 'react-icons/ai'
 import { HiOutlinePlus } from 'react-icons/hi'
 import { Link, useNavigate } from 'react-router-dom'
-import Modal from 'react-modal';
+import { Data } from '../utils/Data'
 
 
 const Navbar = ({ searchTerm, setSearchTerm }) => {
     const [toggle, setToggle] = useState(false)
     const navigate = useNavigate()
-    const [modalIsOpen, setModalIsOpen] = useState(false);
 
     return (
         <>
@@ -34,10 +33,10 @@ const Navbar = ({ searchTerm, setSearchTerm }) => {
                 </div>
 
                 <div className='flex items-center'>
-                    <div onClick={() => setModalIsOpen(true)} className='bg-[#d5d8d8] p-3 mr-3 cursor-pointer rounded-full transition-all hover:bg-[#c3c2c2]'>
+                    <div onClick={() => navigate('/share')} className='bg-[#d5d8d8] p-3 mr-3 cursor-pointer rounded-full transition-all hover:bg-[#c3c2c2]'>
                         <HiOutlinePlus color='black' className=' text-lg' />
                     </div>
-                    <BsFillPersonFill className='cursor-pointer' color='#313C3E' size={30} />
+                    <BsFillPersonFill onClick={() => navigate('/profile:username')} className='cursor-pointer' color='#313C3E' size={30} />
                 </div>
             </div>
             <div className='px-3 transition lg:hidden md:hidden relative flex items-center justify-between p-2'>
@@ -53,35 +52,12 @@ const Navbar = ({ searchTerm, setSearchTerm }) => {
                             <BsSearch color='black' className='cursor-pointer text-lg' />
                         </div>
                     </Link>
-                    <div onClick={() => setModalIsOpen(true)} className='bg-[#d5d8d8] p-3 mr-3 rounded-full'>
+                    <div onClick={() => navigate('/share')} className='bg-[#d5d8d8] p-3 mr-3 rounded-full'>
                         <HiOutlinePlus color='black' className='cursor-pointer text-lg' />
                     </div>
-                    <div className='bg-[#d5d8d8] p-3 rounded-full'>
+                    <div onClick={() => navigate('/profile:username')} className='bg-[#d5d8d8] p-3 rounded-full'>
                         <BsFillPersonFill color='black' className='cursor-pointer text-lg' />
                     </div>
-
-                    <Modal
-                        isOpen={modalIsOpen}
-                        onRequestClose={() => setModalIsOpen(false)}
-                        ariaHideApp={false}
-
-                        style={{
-                            overlay: {
-                                backgroundColor: 'rgba(0, 0, 0, 0.5)'
-                            },
-                            content: {
-                                position: 'fixed',
-                                top: '50%',
-                                left: '50%',
-                                transform: 'translate(-50%, -50%)',
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center'
-                            }
-                        }}
-                    >
-                        <button className='p-2 bg-[#d5d8d8] rounded-md' onClick={() => setModalIsOpen(false)}>Select from Device</button>
-                    </Modal>
                 </div>
             </div>
         </>
