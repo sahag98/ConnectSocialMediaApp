@@ -1,28 +1,26 @@
 import React, { useState, useEffect } from 'react'
-import Posts from './Posts'
 import axios from "axios"
+import ProfilePosts from './ProfilePosts'
 
-
-
-const Feed = () => {
+const ProfileFeed = ({ username }) => {
 
   const [posts, setPosts] = useState([])
   useEffect(() => {
 
     const fetchPosts = async () => {
-      const res = await axios.get("posts/timeline/63bb9940f0a0940418e7dc28");
+      const res = await axios.get("/posts/profile/" + username)
       setPosts(res.data)
     }
     fetchPosts()
-  }, [])
+  }, [username])
 
   return (
-    <div>
+    <div className='flex flex-wrap justify-center'>
       {posts.map(p => (
-        <Posts key={p._id} post={p} />
+        <ProfilePosts key={p._id} post={p} />
       ))}
     </div>
   )
 }
 
-export default Feed
+export default ProfileFeed

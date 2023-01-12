@@ -42,9 +42,13 @@ router.delete("/:id", async (req, res) => {
 })
 //get a user
 
-router.get("/:id", async (req, res) => {
+router.get("/", async (req, res) => {
+  const userId = req.query.userId
+  const username = req.query.username
   try {
-    const user = await User.findById(req.params.id)
+    const user = userId
+      ? await User.findById(userId)
+      : await User.findOne({ username: username })
     const { password, updatedAt, ...other } = user._doc
     res.status(200).json(other)
   } catch (error) {
@@ -53,7 +57,7 @@ router.get("/:id", async (req, res) => {
 })
 
 //get all users
-router.get('/', function (req, res) {
+router.get('/all/users', function (req, res) {
   User.find({}, function (err, users) {
     if (err) {
       res.send("something went wrong")
@@ -99,15 +103,20 @@ router.get('/followers/all', async (req, res) => {
 })
 
 //get all followings of a user
-router.get('/followings/all', async (req, res) => {
+router.get('/followings/:userId', async (req, res) => {
   try {
-    const currentUser = await User.findById(req.body.userId)
+    const user = await User.findById(req.params.userId)
     const followings = await Promise.all(
-      currentUser.followings.map(following => {
+      user.followings.map(following => {
         return User.findById(following)
       })
     )
-    res.json(followings)
+    let followingsList = []
+    followings.map((friend) => {
+      const { _id, username, profilePic } = friend
+      followingsList.push({ _id, username, profilePic })
+    })
+    res.status(200).json(followingsList)
   } catch (error) {
     res.status(500).json(error)
   }

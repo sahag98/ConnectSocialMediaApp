@@ -5,7 +5,10 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   server: {
     proxy: {
-      "/posts/timeline/": "http://localhost:8800/api"
+      "/posts/timeline/": "http://localhost:8800/api",
+      "/posts/profile/": "http://localhost:8800/api",
+      "/users": "http://localhost:8800/api",
+      "/users/followings/": "http://localhost:8800/api",
     }
   },
   plugins: [react()],

@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import Login from './pages/Login';
 import Home from './pages/Home';
+import Profile from './pages/Profile';
 
 function App() {
 
@@ -23,7 +24,7 @@ function App() {
     {
       path: 'register',
       element: <Register />
-    }
+    },
   ])
   return (
     <div className="App">

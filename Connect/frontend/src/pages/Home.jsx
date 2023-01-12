@@ -18,7 +18,7 @@ const Home = () => {
                 <Routes>
                     <Route path="/" element={<Feed />} />
                     <Route path="/share" element={<Share />} />
-                    <Route path="/profile:username" element={<Profile />} />
+                    <Route path="/profile/:username" element={<Profile />} />
                     <Route path="/search" element={<Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />} />
                 </Routes>
             </div>

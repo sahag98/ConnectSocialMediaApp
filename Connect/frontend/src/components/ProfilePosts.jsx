@@ -6,14 +6,10 @@ import { format } from 'timeago.js'
 import people from "../assets/noavatar.png"
 import { Link } from "react-router-dom"
 
-const Posts = ({ post }) => {
+const ProfilePosts = ({ post }) => {
   const [user, setUser] = useState({})
   const [likeNum, setLikeNum] = useState(post.likes.length)
   const [isLiked, setIsLiked] = useState(false)
-
-  useEffect(() => {
-
-  })
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -35,17 +31,17 @@ const Posts = ({ post }) => {
   }
 
   return (
-    <div className='m-5 flex flex-col justify-center items-center'>
-      <div className="bg-[#d5d8d8] flex flex-col gap-3 px-3 py-2 w-full shadow-lg rounded-md  lg:w-1/4">
+    <div className='m-5 flex'>
+      <div className="bg-[#d5d8d8] flex flex-col gap-3 px-3 py-2 shadow-lg rounded-md  lg:w-[350px]">
         <div className='flex items-center'>
-          <Link to={`profile/${user.username}`} className='flex items-center'>
+          <div className='flex items-center'>
             <img className='w-10 h-10 object-cover mr-2 rounded-full' src={user.profilePic ? user.profilePic : people} alt="" />
             <span className='font-semibold mr-2'>{user.username}</span>
-          </Link>
+          </div>
           <span>{format(post.createdAt)}</span>
         </div>
 
-        <img className='w-full object-cover lg:w-[450px] lg:h-[450px]' src={post?.img} alt="" />
+        <img className='w-full object-cover lg:w-[350px] lg:h-[350px]' src={post?.img} alt="" />
         <section className='flex items-center justify-between'>
           <p>{post.desc}</p>
           <div className='flex'>
@@ -61,4 +57,4 @@ const Posts = ({ post }) => {
   )
 }
 
-export default Posts
+export default ProfilePosts
