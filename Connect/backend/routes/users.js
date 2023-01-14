@@ -57,12 +57,19 @@ router.get("/", async (req, res) => {
 })
 
 //get all users
-router.get("/all/users", function (req, res) {
-  User.find({}, function (err, users) {
+router.get("/all/users", async function (req, res) {
+  User.find({}, async function (err, users) {
     if (err) {
       res.send("something went wrong")
     }
-    res.json(users)
+    const people = await Promise.all(
+      users.map((user) => {
+        const u = user
+        return u
+      })
+    );
+    console.log(people)
+    res.status(200).json(people)
   })
 })
 

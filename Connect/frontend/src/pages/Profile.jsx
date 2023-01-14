@@ -31,15 +31,6 @@ const Profile = () => {
         </div>
 
         <Rightbar user={user} />
-        {/* {followersOpen &&
-          <div className='bg-[#8baaaf]'>
-            {followers.map((f) => (
-              <div key={f._id}>
-                {f.username}
-              </div>
-            ))}
-          </div>
-        } */}
       </div>
       <div>
         <ProfileFeed username={username} />

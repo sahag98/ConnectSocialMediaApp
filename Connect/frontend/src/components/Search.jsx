@@ -2,18 +2,26 @@ import React, { useEffect, useState } from 'react'
 import { Data } from '../utils/Data'
 import Spinner from './Spinner'
 import { BsSearch } from 'react-icons/bs'
+import axios from 'axios'
+import SearchItem from './SearchItem'
+
 const Search = ({ searchTerm, setSearchTerm }) => {
-  console.log(searchTerm)
   const [searchData, setSearchData] = useState([])
-  const [loading, setLoading] = useState(false)
-  console.log(loading)
+  const [users, setUsers] = useState([])
+
   useEffect(() => {
-    if (searchTerm !== '') {
-      setLoading(true)
-      const filteredData = Data.filter((data) => data.username.toLowerCase() == searchTerm.toLowerCase())
-      setSearchData(filteredData)
-    }
+    (async () => {
+      if (!searchTerm) {
+        setSearchData([])
+        return;
+      }
+      const res = await axios.get('/users/all/users')
+      setSearchData(res.data.filter((data) => data.username.includes(searchTerm)))
+    })()
+
   }, [searchTerm]);
+
+
 
   return (
     <div className='flex flex-col justify-center  h-1/2 items-center'>
@@ -26,11 +34,14 @@ const Search = ({ searchTerm, setSearchTerm }) => {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
-      <div className='mt-3 p-3 border rounded-md h-72 lg:h-72 lg:w-1/2 w-3/4 flex flex-col gap-4'>
-        {/* {loading && <Spinner message="Searching people" />} */}
-        {searchData.map((data) => (
-          <div key={data.id}>{data.username}</div>
+      <div className='mt-3 p-3 border rounded-md h-auto lg:h-auto lg:w-1/2 w-3/4 flex flex-col gap-4'>
+        {searchData.map((s, index) => (
+          <SearchItem key={index} item={s} searchTerm={searchTerm} />
         ))}
+
+        {/* {searchData.map((data, index) => (
+          <div key={index}>{data}</div>
+        ))} */}
       </div>
     </div>
   )

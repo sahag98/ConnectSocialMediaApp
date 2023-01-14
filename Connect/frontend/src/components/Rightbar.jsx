@@ -36,7 +36,6 @@ const Rightbar = ({ user }) => {
   const [followermodalIsOpen, setfollowerIsOpen] = useState(false);
   const [followings, setFollowings] = useState([])
   const [followers, setFollowers] = useState([])
-  console.log(user._id)
   useEffect(() => {
     const fetchFollowings = async () => {
       try {
@@ -52,7 +51,6 @@ const Rightbar = ({ user }) => {
     fetchFollowings()
   }, [user])
 
-  console.log(followings)
 
   const selectMenu = () => {
     setSelected('follower')
@@ -73,9 +71,6 @@ const Rightbar = ({ user }) => {
     setSelected('following')
     setPhoneIsOpen(!modalIsOpen)
   }
-
-
-  console.log(selected)
 
   return (
     <>

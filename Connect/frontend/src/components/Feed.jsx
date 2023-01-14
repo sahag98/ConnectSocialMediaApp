@@ -5,8 +5,8 @@ import axios from "axios"
 
 
 const Feed = () => {
-
   const [posts, setPosts] = useState([])
+
   useEffect(() => {
 
     const fetchPosts = async () => {
