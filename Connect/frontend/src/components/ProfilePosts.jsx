@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { Data } from '../utils/Data'
 import { BiLike, BiCommentDetail } from 'react-icons/bi'
 import axios from 'axios'
 import { format } from 'timeago.js'

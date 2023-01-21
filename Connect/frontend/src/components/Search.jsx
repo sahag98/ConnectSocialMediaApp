@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { Data } from '../utils/Data'
-import Spinner from './Spinner'
 import { BsSearch } from 'react-icons/bs'
 import axios from 'axios'
 import SearchItem from './SearchItem'

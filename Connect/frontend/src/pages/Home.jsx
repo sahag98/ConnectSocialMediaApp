@@ -5,7 +5,6 @@ import { Routes, Route } from 'react-router-dom';
 import Search from '../components/Search';
 import Share from '../components/Share';
 import Profile from './Profile';
-import { Data } from '../utils/Data';
 
 const Home = () => {
     const [searchTerm, setSearchTerm] = useState('')

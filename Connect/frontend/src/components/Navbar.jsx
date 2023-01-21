@@ -5,8 +5,6 @@ import { RxHamburgerMenu } from 'react-icons/rx'
 import { AiOutlineClose, AiOutlinePlusCircle } from 'react-icons/ai'
 import { HiOutlinePlus } from 'react-icons/hi'
 import { Link, useNavigate } from 'react-router-dom'
-import { Data } from '../utils/Data'
-
 
 const Navbar = ({ searchTerm, setSearchTerm }) => {
     const [toggle, setToggle] = useState(false)

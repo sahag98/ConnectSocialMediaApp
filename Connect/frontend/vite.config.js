@@ -9,6 +9,7 @@ export default defineConfig({
       "/posts/profile/": "http://localhost:8800/api",
       "/users": "http://localhost:8800/api",
       "/users/all/users": "http://localhost:8800/api",
+      "/auth/register": "http://localhost:8800/api"
     }
   },
   plugins: [react()],
