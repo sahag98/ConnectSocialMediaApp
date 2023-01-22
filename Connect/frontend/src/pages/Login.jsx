@@ -1,6 +1,8 @@
 import React, { useRef, useState } from 'react'
 import People from '../assets/people.png'
 import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../actions/auth";
 
 const Login = () => {
 
@@ -9,11 +11,17 @@ const Login = () => {
         password: ''
     })
     const [username, setUsername] = useState('')
-    const password = useRef()
-    const navigate = useNavigate()
+    const [password, setPasword] = useState('')
 
+    const navigate = useNavigate()
+    const dispatch = useDispatch();
     const handleLogin = (e) => {
         e.preventDefault()
+        dispatch(login(username, password)).then(() => {
+            console.log("logged in")
+            navigate("/")
+            window.location.reload()
+        })
     }
     return (
         <div className='items-center justify-evenly md:justify-center flex h-screen w-full bg-[url("https://cdn.glitch.global/5288658f-8afb-4ac7-b1fa-300b8de8635f/Rectangle%2054%20(1).png?v=1672430722934")] bg-cover bg-center'>
@@ -28,8 +36,8 @@ const Login = () => {
                 <h1 className='text-5xl text-center mb-5 font-bold'>Login</h1>
                 <h3 className='mb-5 text-center'>Enter your information to sign in.</h3>
                 <form onSubmit={handleLogin} className='flex flex-col gap-4'>
-                    <input value={user.username} onChange={(e) => setUsername(username.e.target.value)} className='rounded-xl bg-[#E7E7E7] p-3 outline-none' placeholder='Enter Username' type="text" />
-                    <input ref={password} className='rounded-xl bg-[#E7E7E7] p-3 outline-none' placeholder='Enter Password' type="password" />
+                    <input value={username} onChange={(e) => setUsername(e.target.value)} className='rounded-xl bg-[#E7E7E7] p-3 outline-none' placeholder='Enter Username' type="text" />
+                    <input value={password} onChange={(e) => setPasword(e.target.value)} className='rounded-xl bg-[#E7E7E7] p-3 outline-none' placeholder='Enter Password' type="password" />
                     <p className='text-center'>New here?
                         <Link to='/register'>
                             <b className='cursor cursor-pointer'> Sign Up</b>

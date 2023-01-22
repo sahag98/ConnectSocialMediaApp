@@ -5,15 +5,25 @@ import { RxHamburgerMenu } from 'react-icons/rx'
 import { AiOutlineClose, AiOutlinePlusCircle } from 'react-icons/ai'
 import { HiOutlinePlus } from 'react-icons/hi'
 import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../actions/auth";
 
 const Navbar = ({ searchTerm, setSearchTerm }) => {
     const [toggle, setToggle] = useState(false)
+    const { user: currentUser } = useSelector((state) => state.auth);
     const navigate = useNavigate()
+    const dispatch = useDispatch()
 
+    const handleLogout = () => {
+        dispatch(logout())
+        navigate("/login")
+        window.location.reload()
+    }
     return (
         <>
             <div className='hidden px-6 h-16 bg-[#ffffff] shadow-md lg:flex md:flex items-center justify-between'>
                 <div className='flex justify-self-start'>
+
                     <img className='h-10' src={People} alt="" />
                     <Link to="/">
                         <h1 className='text-[#313C3E] text-3xl cursor-pointer font-semibold ml-1'>CONNECT</h1>
@@ -31,10 +41,18 @@ const Navbar = ({ searchTerm, setSearchTerm }) => {
                 </div>
 
                 <div className='flex items-center'>
+                    <div onClick={handleLogout} className='mr-10 cursor-pointer'>
+                        LOGOUT
+                    </div>
                     <div onClick={() => navigate('/share')} className='bg-[#d5d8d8] p-3 mr-3 cursor-pointer rounded-full transition-all hover:bg-[#c3c2c2]'>
                         <HiOutlinePlus color='black' className=' text-lg' />
                     </div>
-                    <BsFillPersonFill onClick={() => navigate('/profile:username')} className='cursor-pointer' color='#313C3E' size={30} />
+                    {currentUser && <div className='flex flex-col items-center'>
+                        <BsFillPersonFill onClick={() => navigate(`/profile/${currentUser.username}`)} className='cursor-pointer' color='#313C3E' size={30} />
+                        <span>{currentUser ? currentUser.username : "not logged in"}</span>
+                    </div>}
+
+
                 </div>
             </div>
             <div className='px-3 transition lg:hidden md:hidden relative flex items-center justify-between p-2'>

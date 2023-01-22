@@ -4,13 +4,14 @@ import ProfileFeed from '../components/ProfileFeed'
 import { useParams } from 'react-router-dom'
 import people from "../assets/noavatar.png"
 import Rightbar from '../components/Rightbar'
+import { useSelector } from "react-redux";
 
 
 const Profile = () => {
   const [followingsOpen, setFollowingsOpen] = useState(false)
   const [followersOpen, setFollowersOpen] = useState(false)
   const username = useParams().username
-
+  const { user: currentUser } = useSelector((state) => state.auth);
   const [user, setUser] = useState({})
 
 
