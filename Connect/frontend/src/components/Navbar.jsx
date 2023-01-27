@@ -44,13 +44,12 @@ const Navbar = ({ searchTerm, setSearchTerm }) => {
                     <div onClick={handleLogout} className='mr-10 cursor-pointer'>
                         LOGOUT
                     </div>
-                    <div onClick={() => navigate('/share')} className='bg-[#d5d8d8] p-3 mr-3 cursor-pointer rounded-full transition-all hover:bg-[#c3c2c2]'>
-                        <HiOutlinePlus color='black' className=' text-lg' />
+                    <div onClick={() => navigate('/share')} className='bg-[#d5d8d8] p-3 mr-3 cursor-pointer rounded-full transition-all hover:bg-[#bcbebe]'>
+                        <HiOutlinePlus color='black' className='text-lg' />
                     </div>
-                    {currentUser && <div className='flex flex-col items-center'>
-                        <BsFillPersonFill onClick={() => navigate(`/profile/${currentUser.username}`)} className='cursor-pointer' color='#313C3E' size={30} />
-                        <span>{currentUser ? currentUser.username : "not logged in"}</span>
-                    </div>}
+                    <div className='flex flex-col items-center bg-[#d5d8d8] hover:bg-[#313C3E] text-[#313C3E] hover:text-white rounded-full transition-all p-3'>
+                        <BsFillPersonFill onClick={() => navigate(`/profile/${currentUser.username}`)} className='text-lg' />
+                    </div>
 
 
                 </div>
@@ -71,7 +70,7 @@ const Navbar = ({ searchTerm, setSearchTerm }) => {
                     <div onClick={() => navigate('/share')} className='bg-[#d5d8d8] p-3 mr-3 rounded-full'>
                         <HiOutlinePlus color='black' className='cursor-pointer text-lg' />
                     </div>
-                    <div onClick={() => navigate('/profile:username')} className='bg-[#d5d8d8] p-3 rounded-full'>
+                    <div onClick={() => navigate(`/profile/${currentUser.username}`)} className='bg-[#d5d8d8] p-3 rounded-full'>
                         <BsFillPersonFill color='black' className='cursor-pointer text-lg' />
                     </div>
                 </div>

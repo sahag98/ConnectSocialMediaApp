@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import Modal from 'react-modal';
 import people from "../assets/noavatar.png"
 import { AiOutlineClose } from 'react-icons/ai'
+import { Link } from 'react-router-dom';
 const customStyles = {
   content: {
     position: 'relative',
@@ -39,8 +40,18 @@ const Rightbar = ({ user }) => {
   useEffect(() => {
     const fetchFollowings = async () => {
       try {
-        const res = await axios.get("/users/followings/" + user._id)
-        const tes = await axios.get("/users/followers/" + user._id)
+        const res = await axios.get(`/users/followings/${user._id}`, {
+          headers: {
+            token:
+              JSON.parse(localStorage.getItem("user")).accessToken
+          }
+        })
+        const tes = await axios.get(`/users/followers/${user._id}`, {
+          headers: {
+            token:
+              JSON.parse(localStorage.getItem("user")).accessToken
+          }
+        })
         setFollowers(tes.data)
         setFollowings(res.data)
 
@@ -92,15 +103,19 @@ const Rightbar = ({ user }) => {
 
               {selected === 'follower' && followers.map((f) => (
                 <div className='flex items-center' key={f._id}>
-                  <img className='w-10 h-10 object-cover rounded-full mr-5' src={f.profilePic ? f.profilePic : people} alt="" />
-                  {f.username}
+                  <Link to={`profile/${f.username}`}>
+                    <img className='w-10 h-10 object-cover rounded-full mr-5' src={f.profilePic ? f.profilePic : people} alt="" />
+                    {f.username}
+                  </Link>
                 </div>
               ))}
 
               {selected === 'following' && followings.map((f) => (
                 <div className='flex items-center' key={f._id}>
-                  <img className='w-10 h-10 object-cover rounded-full mr-5' src={f.profilePic ? f.profilePic : people} alt="" />
-                  {f.username}
+                  <Link to={`profile/${f.username}`}>
+                    <img className='w-10 h-10 object-cover rounded-full mr-5' src={f.profilePic ? f.profilePic : people} alt="" />
+                    {f.username}
+                  </Link>
                 </div>
               ))}
             </div>
@@ -125,15 +140,19 @@ const Rightbar = ({ user }) => {
             <div className='flex flex-col gap-5'>
               {selected === 'follower' && followers.map((f) => (
                 <div className='flex items-center' key={f._id}>
-                  <img className='w-10 h-10 object-cover rounded-full mr-5' src={f.profilePic ? f.profilePic : people} alt="" />
-                  {f.username}
+                  <Link to={`/profile/${f.username}`} onClick={() => setPhoneIsOpen(false)}>
+                    <img className='w-10 h-10 object-cover rounded-full mr-5' src={f.profilePic ? f.profilePic : people} alt="" />
+                    {f.username}
+                  </Link>
                 </div>
               ))}
 
               {selected === 'following' && followings.map((f) => (
                 <div className='flex items-center' key={f._id}>
-                  <img className='w-10 h-10 object-cover rounded-full mr-5' src={f.profilePic ? f.profilePic : people} alt="" />
-                  {f.username}
+                  <Link to={`/profile/${f.username}`} onClick={() => setPhoneIsOpen(false)}>
+                    <img className='w-10 h-10 object-cover rounded-full mr-5' src={f.profilePic ? f.profilePic : people} alt="" />
+                    {f.username}
+                  </Link>
                 </div>
               ))}
             </div>

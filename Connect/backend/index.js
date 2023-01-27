@@ -4,6 +4,7 @@ const mongoose = require("mongoose")
 const dotenv = require("dotenv")
 const helmet = require("helmet")
 const morgan = require("morgan")
+const cors = require("cors");
 const userRoute = require('./routes/users.js')
 const authRoute = require('./routes/auth.js')
 const postRoute = require('./routes/posts.js')
@@ -17,6 +18,7 @@ mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true }, () => {
 
 //middleware
 app.use(express.json())
+app.use(cors());
 app.use(helmet())
 app.use(morgan("common"))
 

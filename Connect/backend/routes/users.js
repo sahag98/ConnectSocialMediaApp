@@ -60,7 +60,7 @@ router.get("/", async (req, res) => {
 
 //get all users
 router.get("/all/users", verify, async function (req, res) {
-  if (req.user.id === req.body.userId) {
+  if (req.user.id) {
     User.find({}, async function (err, users) {
       if (err) {
         res.send("something went wrong")
@@ -71,7 +71,6 @@ router.get("/all/users", verify, async function (req, res) {
           return u
         })
       );
-      console.log(peoples)
       let peopleList = []
       peoples.map((people) => {
         const { _id, username, profilePic } = people
@@ -86,64 +85,76 @@ router.get("/all/users", verify, async function (req, res) {
 
 //follow a user
 router.put("/:id/follow", verify, async (req, res) => {
-  if (req.user.id !== req.params.id) {
-    try {
-      const user = await User.findById(req.params.id)
-      const currentUser = await User.findById(req.user.id)
-      if (!user.followers.includes(req.user.id)) {
-        await user.updateOne({ $push: { followers: req.user.id } })
-        await currentUser.updateOne({ $push: { followings: req.params.id } })
-        res.status(200).json("user has been followed")
-      } else {
-        res.status(403).json("you already follow this user")
+  if (req.user.id) {
+    if (req.body.userId !== req.params.id) {
+      try {
+        const user = await User.findById(req.params.id)
+        const currentUser = await User.findById(req.body.userId)
+        if (!user.followers.includes(req.body.userId)) {
+          await user.updateOne({ $push: { followers: req.body.userId } })
+          await currentUser.updateOne({ $push: { followings: req.params.id } })
+          res.status(200).json("user has been followed")
+        } else {
+          res.status(403).json("you already follow this user")
+        }
+      } catch (error) {
+        res.status(500).json(error)
       }
-    } catch (error) {
-      res.status(500).json(error)
+    } else {
+      res.status(403).json("You cant follow yourself")
     }
   } else {
-    res.status(403).json("You cant follow yourself")
+    res.status(401).json("You are not authorized")
   }
 })
 
 //get all followers of a user
-router.get("/followers/:userId", async (req, res) => {
-  try {
-    const user = await User.findById(req.params.userId)
-    const followers = await Promise.all(
-      user.followers.map(follower => {
-        return User.findById(follower)
+router.get("/followers/:userId", verify, async (req, res) => {
+  if (req.user.id) {
+    try {
+      const user = await User.findById(req.params.userId)
+      const followers = await Promise.all(
+        user.followers.map(follower => {
+          return User.findById(follower)
+        })
+      )
+      let followersList = []
+      followers.map((friend) => {
+        const { _id, username, profilePic } = friend
+        followersList.push({ _id, username, profilePic })
       })
-    )
-    let followersList = []
-    followers.map((friend) => {
-      const { _id, username, profilePic } = friend
-      followersList.push({ _id, username, profilePic })
-    })
-    res.status(200).json(followersList)
-  } catch (error) {
-    res.status(500).json(error)
+      res.status(200).json(followersList)
+    } catch (error) {
+      res.status(500).json(error)
+    }
+  }
+  else {
+    res.status(403).json("Not authorized")
   }
 })
 
 
 //get all followings of a user
-router.get("/followings/:userId", async (req, res) => {
-  try {
-    console.log(req.params.userId)
-    const user = await User.findById(req.params.userId)
-    const followings = await Promise.all(
-      user.followings.map(following => {
-        return User.findById(following)
+router.get("/followings/:userId", verify, async (req, res) => {
+  if (req.user.id) {
+    try {
+      const user = await User.findById(req.params.userId)
+      const followings = await Promise.all(
+        user.followings.map(following => {
+          return User.findById(following)
+        })
+      )
+      let followingsList = []
+      followings.map((friend) => {
+        const { _id, username, profilePic } = friend
+        followingsList.push({ _id, username, profilePic })
       })
-    )
-    let followingsList = []
-    followings.map((friend) => {
-      const { _id, username, profilePic } = friend
-      followingsList.push({ _id, username, profilePic })
-    })
-    res.status(200).json(followingsList)
-  } catch (error) {
-    res.status(500).json(error)
+      res.status(200).json(followingsList)
+    } catch (error) {
+      res.status(500).json(error)
+    }
+  } else {
+    res.status(403).json("Not authorized")
   }
 })
 //unfollow a user
@@ -153,6 +164,7 @@ router.put('/:id/unfollow', verify, async (req, res) => {
     try {
       const user = await User.findById(req.params.id)
       const currentUser = await User.findById(req.user.id)
+      console.log(currentUser)
       if (user.followers.includes(req.user.id)) {
         await user.updateOne({ $pull: { followers: req.user.id } })
         await currentUser.updateOne({ $pull: { followings: req.user.id } })

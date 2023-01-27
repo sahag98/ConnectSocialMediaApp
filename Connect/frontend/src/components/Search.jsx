@@ -6,14 +6,18 @@ import SearchItem from './SearchItem'
 const Search = ({ searchTerm, setSearchTerm }) => {
   const [searchData, setSearchData] = useState([])
   const [users, setUsers] = useState([])
-
   useEffect(() => {
     (async () => {
       if (!searchTerm) {
         setSearchData([])
         return;
       }
-      const res = await axios.get('/users/all/users')
+      const res = await axios.get('/users/all/users', {
+        headers: {
+          token:
+            JSON.parse(localStorage.getItem("user")).accessToken
+        }
+      })
       setSearchData(res.data.filter((data) => data.username.includes(searchTerm)))
     })()
 
@@ -36,10 +40,6 @@ const Search = ({ searchTerm, setSearchTerm }) => {
         {searchData.map((s, index) => (
           <SearchItem key={index} item={s} searchTerm={searchTerm} />
         ))}
-
-        {/* {searchData.map((data, index) => (
-          <div key={index}>{data}</div>
-        ))} */}
       </div>
     </div>
   )

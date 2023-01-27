@@ -8,6 +8,7 @@ import {
 
 import AuthService from "../services/auth.service";
 
+
 export const register = (user) => (dispatch) => {
   return AuthService.register(user).then(
     (response) => {
