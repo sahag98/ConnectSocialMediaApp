@@ -1,7 +1,69 @@
-import React from 'react'
+import axios from 'axios';
+import React, { useState } from 'react'
+import { useRef } from 'react';
 import { AiOutlineCloudUpload } from 'react-icons/ai'
-
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from 'react-router-dom';
+import storage from '../firebase';
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage"
 const Share = () => {
+  const { user } = useSelector((state) => state.auth);
+  const caption = useRef()
+  const [file, setFile] = useState(null)
+  const [url, setUrl] = useState("")
+  const navigate = useNavigate()
+  const [percent, setPercent] = useState(0)
+  async function submitPost(e) {
+    e.preventDefault()
+
+    if (!file) {
+      alert("Please choose a file first!")
+    }
+    const newPost = {
+      userId: user._id,
+      desc: caption.current.value
+    }
+
+    if (file) {
+      const storageRef = ref(storage, `/images/${file.name}`)
+      const uploadTask = uploadBytesResumable(storageRef, file)
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const percent = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          )
+          setPercent(percent)
+        },
+        (err) => console.log(err),
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+            setFile(null)
+
+            setUrl(url)
+            newPost.img = url
+            axios.post("/posts", newPost)
+            navigate("/")
+          })
+        }
+      )
+      // const uploadTask = ref.put(file)
+      // uploadTask.on("state_changed", console.log, console.error, () => {
+      //   ref
+      //     .getDownloadURL()
+      //     .then((url) => {
+      //       setFile(null)
+      //       setUrl(url)
+      //       newPost.img = url
+      //       axios.post("/posts", newPost)
+      //       window.location.reload()
+      //       navigate("/")
+      //     })
+      // })
+    }
+  }
+
   return (
     <div className='flex items-center justify-center h-screen'>
       <label>
@@ -17,8 +79,18 @@ const Share = () => {
             type="file"
             name="upload-image"
             className="w-0 h-0"
+            accept=".png,.jpeg,.jpg"
+            onChange={(e) => setFile(e.target.files[0])}
           />
+
         </div>
+        {file &&
+          <div className='flex flex-col m-3 items-center w-full gap-5'>
+            <input type="text" className='outline-none p-2 bg-slate-300 w-full' placeholder='Enter caption' ref={caption} />
+            <button onClick={submitPost} className='bg-[#313C3E] text-white p-2 w-1/2'>Post</button>
+          </div>
+        }
+        <p>{percent} % done</p>
       </label>
     </div>
   )

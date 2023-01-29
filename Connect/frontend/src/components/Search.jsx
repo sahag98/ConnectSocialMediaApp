@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { BsSearch } from 'react-icons/bs'
 import axios from 'axios'
 import SearchItem from './SearchItem'
-
+import Spinner from './Spinner'
 const Search = ({ searchTerm, setSearchTerm }) => {
   const [searchData, setSearchData] = useState([])
   const [users, setUsers] = useState([])
@@ -23,8 +23,6 @@ const Search = ({ searchTerm, setSearchTerm }) => {
 
   }, [searchTerm]);
 
-
-
   return (
     <div className='flex flex-col justify-center  h-1/2 items-center'>
       <div className='lg:hidden md:hidden flex items-center w-64 p-2 self-center bg-[#d5d8d8] rounded-md'>
@@ -37,9 +35,11 @@ const Search = ({ searchTerm, setSearchTerm }) => {
         />
       </div>
       <div className='mt-3 p-3 border rounded-md h-auto lg:h-auto lg:w-1/2 w-3/4 flex flex-col gap-4'>
-        {searchData.map((s, index) => (
-          <SearchItem key={index} item={s} searchTerm={searchTerm} />
-        ))}
+        {
+          searchData.map((s, index) => (
+            <SearchItem key={index} item={s} searchTerm={searchTerm} />
+          ))
+        }
       </div>
     </div>
   )
