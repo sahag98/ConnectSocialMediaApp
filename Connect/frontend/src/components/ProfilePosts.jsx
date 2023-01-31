@@ -45,7 +45,7 @@ const ProfilePosts = ({ post }) => {
           <p>{post.desc}</p>
           <div className='flex'>
             <span className='mr-1'>{likeNum}</span>
-            <BiLike onClick={likeHandler} size={25} color={isLiked ? "red" : "black"} className="mr-3 cursor-pointer" />
+            <BiLike size={25} color={isLiked ? "red" : "black"} className="mr-3 cursor-pointer" />
             <span className='mr-1 cursor-pointer'>2</span>
             <BiCommentDetail size={25} />
           </div>

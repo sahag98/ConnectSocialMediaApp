@@ -1,18 +1,27 @@
 import React, { useState, useEffect } from 'react'
 import { BiLike, BiCommentDetail } from 'react-icons/bi'
+import { AiOutlinePlusCircle } from 'react-icons/ai'
 import axios from 'axios'
 import { format } from 'timeago.js'
 import people from "../assets/noavatar.png"
 import { Link } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux";
 
 const Posts = ({ post }) => {
   const [user, setUser] = useState({})
   const [likeNum, setLikeNum] = useState(post.likes.length)
+  const [commentNum, setCommentNum] = useState(post.comments.length)
   const [isLiked, setIsLiked] = useState(false)
+  const [isCommented, setIsCommented] = useState(false)
+  const { user: currentUser } = useSelector((state) => state.auth);
+  const [open, setOpen] = useState(false)
+  const [comment, setComment] = useState('')
+  const [commenter, setCommenter] = useState('')
 
   useEffect(() => {
-
-  })
+    setIsLiked(post.likes.includes(currentUser._id))
+    setIsCommented(post.comments.includes(currentUser._id))
+  }, [currentUser._id, post.likes, post.comments])
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -24,14 +33,28 @@ const Posts = ({ post }) => {
   }, [post.userId])
 
   const likeHandler = () => {
-    // try {
-    //   axios.put("/posts/"+ post._id + "/like")
-    // } catch (error) {
+    try {
+      axios.put("/posts/" + post._id + "/like", { userId: currentUser._id })
+    } catch (error) {
 
-    // }
-    // setLikeNum(isLiked ? likeNum - 1 : likeNum + 1)
-    // setIsLiked(!isLiked)
+    }
+    setLikeNum(isLiked ? likeNum - 1 : likeNum + 1)
+    setIsLiked(!isLiked)
   }
+
+  const commentHandler = () => {
+    try {
+      axios.put("/posts/" + post._id + "/comment", { comment: comment, userId: currentUser._id })
+    } catch (error) {
+
+    }
+    setCommentNum(isCommented ? commentNum - 1 : commentNum + 1)
+    setIsCommented(!isCommented)
+
+  }
+
+
+
 
   return (
     <div className='m-5 flex flex-col justify-center items-center'>
@@ -50,11 +73,26 @@ const Posts = ({ post }) => {
           <div className='flex'>
             <span className='mr-1'>{likeNum}</span>
             <BiLike onClick={likeHandler} size={25} color={isLiked ? "red" : "black"} className="mr-3 cursor-pointer" />
-            <span className='mr-1 cursor-pointer'>2</span>
-            <BiCommentDetail size={25} />
+            <span className='mr-1 cursor-pointer'>{commentNum}</span>
+            <BiCommentDetail onClick={() => setOpen(!open)} size={25} />
           </div>
-        </section>
 
+        </section>
+        {open &&
+          <div className='h-auto flex flex-col'>
+            <div className='flex justify-evenly items-center mb-2'>
+              <input onChange={(e) => setComment(e.target.value)} className='outline-none p-1 w-4/5' type="text" />
+              <AiOutlinePlusCircle size={28} onClick={commentHandler} />
+            </div>
+            <div className='flex flex-col'>
+              {/* {post.comments.map((c, index) => (
+                <div className='flex' key={index}>
+                  <p>{c}</p>
+                </div>
+              ))} */}
+            </div>
+          </div>
+        }
       </div>
     </div>
   )

@@ -64,7 +64,7 @@ router.put("/:id/comment", async (req, res) => {
   try {
     const post = await Post.findById(req.params.id)
     if (!post.comments.includes(req.body.userId)) {
-      await post.updateOne({ $push: { comments: req.body.comment } })
+      await post.updateOne({ $push: { comments: { "comment": req.body.comment, "commenter": req.body.userId } } })
       res.status(200).json("Comment added")
     } else {
       await post.updateOne({ $pull: { comments: req.body.comment } })

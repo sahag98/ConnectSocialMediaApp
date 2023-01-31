@@ -9,13 +9,28 @@ import {
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
+import { getAuth, signInAnonymously } from "firebase/auth";
+import { useDispatch, useSelector } from "react-redux";
 
 function App() {
+  const { user: currentUser } = useSelector((state) => state.auth);
+
+  const auth = getAuth();
+  signInAnonymously(auth)
+    .then(() => {
+      // Signed in..
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // ...
+    });
+
 
   const router = createBrowserRouter([
     {
       path: "*",
-      element: <Home />
+      element: currentUser ? <Home /> : <Login />
     },
     {
       path: 'login',

@@ -30,6 +30,7 @@ const Login = () => {
                 <div className='mt-5'>
                     <h1 className='bg-[#717B7A] py-1 px-2 w-30 mb-2 rounded-md text-center text-white font-bold text-5xl pb-2'>CONNECT</h1>
                     <h3 className='font-light text-center'>A place to connect like no other</h3>
+
                 </div>
             </div>
             <div className='bg-white rounded-xl p-5 w-4/5 lg:w-1/4'>
