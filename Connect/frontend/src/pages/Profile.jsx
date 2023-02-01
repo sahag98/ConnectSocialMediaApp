@@ -4,15 +4,20 @@ import ProfileFeed from '../components/ProfileFeed'
 import { useParams } from 'react-router-dom'
 import people from "../assets/noavatar.png"
 import Rightbar from '../components/Rightbar'
+import { AiFillCloseCircle } from 'react-icons/ai'
 import { useDispatch, useSelector } from "react-redux";
+import storage from '../firebase';
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage"
 
 const Profile = () => {
   const [followingsOpen, setFollowingsOpen] = useState(false)
-  const [followersOpen, setFollowersOpen] = useState(false)
+  const [openInput, setOpenInput] = useState(false)
   const username = useParams().username
   const { user: currentUser } = useSelector((state) => state.auth);
   const [user, setUser] = useState({})
+  const [file, setFile] = useState(null)
   const dispatch = useDispatch()
+  const [percent, setPercent] = useState(0)
 
   const instance = axios.create({
     baseURL: 'http://localhost:8800/api',
@@ -28,18 +33,73 @@ const Profile = () => {
     fetchUser()
   }, [username])
 
+
+  async function submitPic(e) {
+    e.preventDefault()
+
+    if (!file) {
+      alert("Please choose a file first!")
+    }
+    if (file) {
+      const storageRef = ref(storage, `/profileImages/${file.name}`)
+      const uploadTask = uploadBytesResumable(storageRef, file)
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const percent = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          )
+          setPercent(percent)
+        },
+        (err) => console.log(err),
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+            axios.put(`/users/${currentUser._id}/user`, {
+              profilePic: url
+            })
+            window.location.reload()
+          })
+        }
+      )
+
+    }
+  }
+
   const follow = async () => {
     await instance.put(`/users/${user._id}/follow`, {
       userId: currentUser._id,
     })
   }
 
+
   return (
     <div className='flex flex-col'>
       <div className='flex flex-col gap-3 justify-center items-center'>
-        <div>
-          <img className='w-40 h-40 object-cover rounded-full mb-2' src={user.profilePic ? user.profilePic : people} />
-          <h1 className='text-center'>{user.username}</h1>
+        <div className='flex flex-col items-center'>
+          <img className='w-40 h-40 object-cover rounded-full' src={user.profilePic ? user.profilePic : people} />
+          <h1 className='text-center mb-2'>{user.username}</h1>
+          {currentUser.username == username &&
+            <div>
+              {!openInput &&
+                <button className='bg-[#313C3E] rounded-md p-2 text-white' onClick={() => setOpenInput(!openInput)}>Update Profile Pic</button>
+              }
+              {openInput &&
+                <div className='flex items-center'>
+                  <input
+                    type="file"
+                    name="upload-image"
+                    className=""
+                    accept=".png,.jpeg,.jpg"
+                    onChange={(e) => setFile(e.target.files[0])}
+                  />
+                  <button className='bg-[#313C3E] rounded-md p-2 text-white' onClick={submitPic}>upload</button>
+                  <AiFillCloseCircle className='ml-5' color='#313C3E' size={30} onClick={() => setOpenInput(false)} />
+                </div>
+              }
+            </div>
+          }
+
         </div>
 
         <Rightbar user={user} />

@@ -63,18 +63,14 @@ router.put("/:id/like", async (req, res) => {
 router.put("/:id/comment", async (req, res) => {
   try {
     const post = await Post.findById(req.params.id)
-    if (!post.comments.includes(req.body.userId)) {
-      await post.updateOne({ $push: { comments: { "comment": req.body.comment, "commenter": req.body.userId } } })
+    if (!post.comments.includes(req.body.user)) {
+      await post.updateOne({ $push: { comments: { "comment": req.body.comment, "commenter": req.body.user } } })
       res.status(200).json("Comment added")
-    } else {
-      await post.updateOne({ $pull: { comments: req.body.comment } })
-      res.status(200).json("Comment has been deleted")
     }
   } catch (error) {
     res.status(500).json(error)
   }
 })
-
 
 //get a post
 router.get("/:id", async (req, res) => {

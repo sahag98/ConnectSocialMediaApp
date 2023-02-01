@@ -13,6 +13,7 @@ const Share = () => {
   const [url, setUrl] = useState("")
   const navigate = useNavigate()
   const [percent, setPercent] = useState(0)
+
   async function submitPost(e) {
     e.preventDefault()
 

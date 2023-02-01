@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { BiLike, BiCommentDetail } from 'react-icons/bi'
-import { AiOutlinePlusCircle } from 'react-icons/ai'
+import { AiOutlinePlusCircle, AiOutlineSafety } from 'react-icons/ai'
 import axios from 'axios'
 import { format } from 'timeago.js'
 import people from "../assets/noavatar.png"
@@ -16,8 +16,8 @@ const Posts = ({ post }) => {
   const { user: currentUser } = useSelector((state) => state.auth);
   const [open, setOpen] = useState(false)
   const [comment, setComment] = useState('')
-  const [commenter, setCommenter] = useState('')
-
+  const [commenter, setCommenter] = useState({})
+  console.log(isLiked)
   useEffect(() => {
     setIsLiked(post.likes.includes(currentUser._id))
     setIsCommented(post.comments.includes(currentUser._id))
@@ -44,13 +44,13 @@ const Posts = ({ post }) => {
 
   const commentHandler = () => {
     try {
-      axios.put("/posts/" + post._id + "/comment", { comment: comment, userId: currentUser._id })
+      axios.put("/posts/" + post._id + "/comment", { comment: comment, user: currentUser })
     } catch (error) {
 
     }
     setCommentNum(isCommented ? commentNum - 1 : commentNum + 1)
     setIsCommented(!isCommented)
-
+    window.location.reload()
   }
 
 
@@ -84,12 +84,16 @@ const Posts = ({ post }) => {
               <input onChange={(e) => setComment(e.target.value)} className='outline-none p-1 w-4/5' type="text" />
               <AiOutlinePlusCircle size={28} onClick={commentHandler} />
             </div>
-            <div className='flex flex-col'>
-              {/* {post.comments.map((c, index) => (
+            <div className='flex flex-col gap-2'>
+              {post.comments.map((c, index) => (
                 <div className='flex' key={index}>
-                  <p>{c}</p>
+                  <div className='flex gap-2 mr-2'>
+                    <img className='w-7 h-7' src={c.commenter.profilePic ? c.commenter.profilePic : people} alt="" />
+                    <p className='mr-2'>{c.commenter.username}</p>
+                  </div>
+                  <p className='mr-2 text-left'>{c.comment}</p>
                 </div>
-              ))} */}
+              ))}
             </div>
           </div>
         }
