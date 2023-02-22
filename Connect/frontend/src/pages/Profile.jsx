@@ -19,6 +19,11 @@ const Profile = () => {
   const dispatch = useDispatch()
   const [percent, setPercent] = useState(0)
 
+  console.log(currentUser.followings.includes(user?._id))
+
+  const [followed, setFollowed] = useState(currentUser.followings.includes(user._id))
+  console.log(followed)
+
   const instance = axios.create({
     baseURL: 'http://localhost:8800/api',
     timeout: 1000,
@@ -56,6 +61,7 @@ const Profile = () => {
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then((url) => {
             axios.put(`/users/${currentUser._id}/user`, {
+              userId: currentUser._id,
               profilePic: url
             })
             window.location.reload()
@@ -70,14 +76,21 @@ const Profile = () => {
     await instance.put(`/users/${user._id}/follow`, {
       userId: currentUser._id,
     })
+    dispatch({ type: "FOLLOW", payload: user._id })
   }
 
+  const unfollow = async () => {
+    await instance.put(`/users/${user._id}/unfollow`, {
+      userId: currentUser._id,
+    })
+    dispatch({ type: "UNFOLLOW", payload: user._id })
+  }
 
   return (
     <div className='flex flex-col'>
       <div className='flex flex-col gap-3 justify-center items-center'>
-        <div className='flex flex-col items-center'>
-          <img className='w-40 h-40 object-cover rounded-full' src={user.profilePic ? user.profilePic : people} />
+        <div className='flex flex-col items-center mt-3'>
+          <img className='w-40 h-40 border object-cover rounded-full' src={user.profilePic ? user.profilePic : people} />
           <h1 className='text-center mb-2'>{user.username}</h1>
           {currentUser.username == username &&
             <div>
@@ -103,7 +116,10 @@ const Profile = () => {
         </div>
 
         <Rightbar user={user} />
-        <button onClick={follow}>Follow</button>
+        {currentUser.followings.includes(user?._id) ?
+          <button className='bg-[#313C3E] text-white p-2 rounded-md' onClick={unfollow}>UnFollow</button> :
+          <button onClick={follow}>Follow</button>
+        }
       </div>
       <div>
         <ProfileFeed username={username} />

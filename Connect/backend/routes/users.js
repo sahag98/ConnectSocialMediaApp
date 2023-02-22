@@ -5,6 +5,16 @@ const verify = require("../verifyToken")
 
 //update user
 router.put("/:id/user", async (req, res) => {
+  if (req.body.userId === req.params.id) {
+    if (req.body.password) {
+      try {
+        const salt = bcrypt.genSaltSync(10)
+        req.body.password = bcrypt.hashSync(req.body.password, salt)
+      } catch (error) {
+        return res.status(500).json(err)
+      }
+    }
+  }
   try {
     const user = await User.findByIdAndUpdate(req.params.id, {
       $set: req.body,
@@ -145,23 +155,27 @@ router.get("/followings/:userId", verify, async (req, res) => {
 //unfollow a user
 
 router.put('/:id/unfollow', verify, async (req, res) => {
-  if (req.user.id !== req.params.id) {
-    try {
-      const user = await User.findById(req.params.id)
-      const currentUser = await User.findById(req.user.id)
-      console.log(currentUser)
-      if (user.followers.includes(req.user.id)) {
-        await user.updateOne({ $pull: { followers: req.user.id } })
-        await currentUser.updateOne({ $pull: { followings: req.user.id } })
-        res.status(200).json("user has been unfollowed")
-      } else {
-        res.status(403).json("you dont follow this user")
+  if (req.user.id) {
+    if (req.body.userId !== req.params.id) {
+      try {
+        const user = await User.findById(req.params.id)
+        const currentUser = await User.findById(req.body.userId)
+        console.log(currentUser)
+        if (user.followers.includes(req.body.userId)) {
+          await user.updateOne({ $pull: { followers: req.body.userId } })
+          await currentUser.updateOne({ $pull: { followings: req.params.id } })
+          res.status(200).json("user has been unfollowed")
+        } else {
+          res.status(403).json("you dont follow this user")
+        }
+      } catch (error) {
+        res.status(500).json(error)
       }
-    } catch (error) {
-      res.status(500).json(error)
+    } else {
+      res.status(403).json("You cant follow yourself")
     }
   } else {
-    res.status(403).json("You cant unfollow yourself")
+    res.status(401).json("You are not authorized")
   }
 })
 

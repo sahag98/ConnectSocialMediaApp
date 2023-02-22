@@ -6,6 +6,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      backgroundImage: {
+        backgroundImg: "url('./src/assets/bg.png')"
+      },
       colors: {
         'grey-blue': '#D9D9D9',
         'box-color': '#717B7A',

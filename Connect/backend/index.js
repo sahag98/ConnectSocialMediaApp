@@ -8,6 +8,7 @@ const cors = require("cors");
 const userRoute = require('./routes/users.js')
 const authRoute = require('./routes/auth.js')
 const postRoute = require('./routes/posts.js')
+const ServerlessHttp = require('serverless-http')
 
 dotenv.config()
 
@@ -26,6 +27,12 @@ app.use("/api/users", userRoute)
 app.use("/api/auth", authRoute)
 app.use("/api/posts", postRoute)
 
+app.get("/", (req, res) => {
+  res.status(200).json("working!!")
+})
+
 app.listen(8800, () => {
   console.log("Backend is running")
 })
+
+module.exports.handler = ServerlessHttp(app)

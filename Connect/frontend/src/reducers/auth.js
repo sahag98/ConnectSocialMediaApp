@@ -4,6 +4,8 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
+  FOLLOW,
+  UNFOLLOW
 } from "../actions/types";
 
 const user = JSON.parse(localStorage.getItem("user"));
@@ -11,9 +13,10 @@ const initialState = user
   ? { isLoggedIn: true, user }
   : { isLoggedIn: false, user: null };
 
+
+
 export default function (state = initialState, action) {
   const { type, payload } = action;
-  console.log(state.user)
   switch (type) {
     case REGISTER_SUCCESS:
       return {
@@ -43,6 +46,22 @@ export default function (state = initialState, action) {
         isLoggedIn: false,
         user: null,
       };
+    case FOLLOW:
+      state.user.followings.push(payload)
+      localStorage.setItem("user", JSON.stringify(user))
+      return {
+        ...state,
+      }
+
+    case UNFOLLOW:
+      // if (!state.user.followings){
+      //   return state;
+      // }
+      state.user.followings = state.user.followings.filter((following) => following !== payload)
+      localStorage.setItem("user", JSON.stringify(user))
+      return {
+        ...state,
+      }
     default:
       return state;
   }

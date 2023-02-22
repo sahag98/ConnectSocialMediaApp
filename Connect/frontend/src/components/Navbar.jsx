@@ -21,7 +21,7 @@ const Navbar = ({ searchTerm, setSearchTerm }) => {
     }
     return (
         <>
-            <div className='hidden px-6 h-16 bg-[#ffffff] shadow-md lg:flex md:flex items-center justify-between'>
+            <div className='hidden fixed w-full z-10 px-6 h-16 bg-[#ffffff] shadow-md lg:flex md:flex items-center justify-between'>
                 <div className='flex justify-self-start'>
 
                     <img className='h-10' src={People} alt="" />
@@ -40,18 +40,17 @@ const Navbar = ({ searchTerm, setSearchTerm }) => {
                     />
                 </div>
 
-                <div className='flex items-center'>
+                <div className='flex items-center justify-between'>
                     <div onClick={handleLogout} className='mr-10 cursor-pointer'>
                         LOGOUT
                     </div>
-                    <div onClick={() => navigate('/share')} className='bg-[#d5d8d8] p-3 mr-3 cursor-pointer rounded-full transition-all hover:bg-[#bcbebe]'>
-                        <HiOutlinePlus color='black' className='text-lg' />
+                    <div onClick={() => navigate('/share')} className='bg-[#d5d8d8] w-12 h-12 mr-3 flex justify-center items-center cursor-pointer rounded-full transition-all hover:bg-[#bcbebe]'>
+                        <HiOutlinePlus color='black' />
                     </div>
-                    <div className='flex flex-col items-center bg-[#d5d8d8] hover:bg-[#313C3E] text-[#313C3E] hover:text-white rounded-full transition-all p-3'>
-                        <BsFillPersonFill onClick={() => navigate(`/profile/${currentUser.username}`)} className='text-lg' />
+                    <div onClick={() => navigate(`/profile/${currentUser.username}`)} className='flex flex-col items-center bg-[#d5d8d8] rounded-full transition-all'>
+                        <img className='object-cover hover:opacity-75 rounded-full w-12 h-12 border-2' src={currentUser.profilePic} alt="" />
+                        {/* <BsFillPersonFill onClick={() => navigate(`/profile/${currentUser.username}`)} className='text-lg' /> */}
                     </div>
-
-
                 </div>
             </div>
             <div className='px-3 transition lg:hidden md:hidden relative flex items-center justify-between p-2'>

@@ -1,10 +1,11 @@
 import { FOLLOW, UNFOLLOW } from "./types";
 
-export const followUser = (user) => ({
+export const followUser = (follower) => ({
   type: FOLLOW,
-  payload: user,
+  payload: follower
 });
 
-export const unfollowUser = () => ({
+export const unfollowUser = (follower) => ({
   type: UNFOLLOW,
+  payload: follower,
 });

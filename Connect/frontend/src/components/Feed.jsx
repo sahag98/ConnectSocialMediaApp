@@ -25,7 +25,7 @@ const Feed = () => {
 
 
   return (
-    <>
+    <div className=''>
       <div className='flex justify-center items-center mt-10'>
         {posts.length === 0 &&
           <p>Follow people to see their posts!</p>
@@ -35,7 +35,7 @@ const Feed = () => {
       {posts.map(p => (
         <Posts key={p._id} post={p} />
       ))}
-    </>
+    </div>
   )
 }
 

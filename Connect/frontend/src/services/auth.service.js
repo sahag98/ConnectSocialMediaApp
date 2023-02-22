@@ -1,7 +1,7 @@
 import axios from 'axios'
 
+// const API_URL = "https://f5l0nd9go9.execute-api.us-east-1.amazonaws.com/test/auth/"
 const API_URL = "/auth/"
-
 const register = (user) => {
   // const user = {
   //   email: email,
@@ -18,7 +18,6 @@ const login = (username, password) => {
     password
   })
     .then((response) => {
-      console.log(response.data)
       if (response.data.accessToken) {
         localStorage.setItem("user", JSON.stringify(response.data))
       }
