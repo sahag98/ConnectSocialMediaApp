@@ -41,15 +41,8 @@ const Navbar = ({ searchTerm, setSearchTerm }) => {
                 </div>
 
                 <div className='flex items-center justify-between'>
-                    <div onClick={handleLogout} className='mr-10 cursor-pointer'>
-                        LOGOUT
-                    </div>
-                    <div onClick={() => navigate('/share')} className='bg-[#d5d8d8] w-12 h-12 mr-3 flex justify-center items-center cursor-pointer rounded-full transition-all hover:bg-[#bcbebe]'>
-                        <HiOutlinePlus color='black' />
-                    </div>
                     <div onClick={() => navigate(`/profile/${currentUser.username}`)} className='flex flex-col items-center bg-[#d5d8d8] rounded-full transition-all'>
                         <img className='object-cover hover:opacity-75 rounded-full w-12 h-12 border-2' src={currentUser.profilePic} alt="" />
-                        {/* <BsFillPersonFill onClick={() => navigate(`/profile/${currentUser.username}`)} className='text-lg' /> */}
                     </div>
                 </div>
             </div>

@@ -57,7 +57,7 @@ const Posts = ({ post }) => {
 
 
   return (
-    <div className='mx-5 lg:m-20 flex flex-col justify-center items-center'>
+    <div className='mx-5 mb-10 lg:m-20 md:mt-12 flex flex-col justify-center items-center'>
       <div className="bg-[#d5d8d8] flex flex-col gap-2 py-2 w-full shadow-lg rounded-md  lg:w-1/4">
         <div className='flex items-center ml-2'>
           <Link to={`profile/${user.username}`} className='flex items-center'>
@@ -67,9 +67,9 @@ const Posts = ({ post }) => {
           <span>{format(post.createdAt)}</span>
         </div>
 
-        <img className='w-full object-cover h-[350px] lg:w-[full] lg:h-[450px]' src={post?.img} alt="" />
+        <img className='w-full object-cover h-[350px] md:h-[500px] lg:w-[full] lg:h-[450px]' src={post?.img} alt="" />
         <section className='flex items-center justify-between m-1'>
-          <p>{post.desc}</p>
+          <p className='ml-2'>{post.desc}</p>
           <div className='flex'>
             <span className='mr-1'>{likeNum}</span>
             <BiLike onClick={likeHandler} size={25} color={isLiked ? "red" : "black"} className="mr-3 cursor-pointer" />

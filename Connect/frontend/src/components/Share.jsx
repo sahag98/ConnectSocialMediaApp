@@ -49,51 +49,45 @@ const Share = () => {
           })
         }
       )
-      // const uploadTask = ref.put(file)
-      // uploadTask.on("state_changed", console.log, console.error, () => {
-      //   ref
-      //     .getDownloadURL()
-      //     .then((url) => {
-      //       setFile(null)
-      //       setUrl(url)
-      //       newPost.img = url
-      //       axios.post("/posts", newPost)
-      //       window.location.reload()
-      //       navigate("/")
-      //     })
-      // })
     }
   }
 
   return (
-    <div className='flex items-center justify-center h-screen'>
+    <main className='flex items-center justify-center h-screen'>
       <label>
-        <div className='m-3 h-72 bg-[#d5d8d8] p-8 flex flex-col justify-center items-center'>
-          <p className="font-bold text-2xl">
-            <AiOutlineCloudUpload />
-          </p>
-          <p className="text-lg">Click to upload</p>
-          <p className=" text-gray-400">
-            Recommendation: Use high-quality JPG, JPEG, SVG, PNG, GIF or TIFF less than 20MB
-          </p>
-          <input
-            type="file"
-            name="upload-image"
-            className="w-0 h-0"
-            accept=".png,.jpeg,.jpg"
-            onChange={(e) => setFile(e.target.files[0])}
-          />
+        {!file &&
+          <div className='m-3 h-72 cursor-pointer bg-[#d5d8d8] p-8 flex flex-col justify-center items-center'>
+            <p className="font-bold text-2xl">
+              <AiOutlineCloudUpload />
+            </p>
+            <p className="text-lg">Click to upload</p>
+            <p className=" text-gray-400">
+              Recommendation: Use high-quality JPG, JPEG, SVG, PNG, GIF or TIFF less than 20MB
+            </p>
+            <input
+              type="file"
+              name="upload-image"
+              className="w-0 h-0"
+              accept=".png,.jpeg,.jpg"
+              onChange={(e) => setFile(e.target.files[0])}
+            />
 
-        </div>
-        {file &&
-          <div className='flex flex-col m-3 items-center w-full gap-5'>
-            <input type="text" className='outline-none p-2 bg-slate-300 w-full' placeholder='Enter caption' ref={caption} />
-            <button onClick={submitPost} className='bg-[#313C3E] text-white p-2 w-1/2'>Post</button>
           </div>
         }
-        <p>{percent} % done</p>
+        {file &&
+          <>
+            <div className='m-3 h-96 cursor-pointer bg-[#d5d8d8]flex flex-col justify-center items-center'>
+              <img className='w-full h-full object-cover' src={URL.createObjectURL(file)} alt="image-preview" />
+            </div>
+            <form onSubmit={submitPost} className='flex flex-col m-3 items-center gap-3'>
+              <input required autoFocus={true} type="text" className='outline-none p-2 bg-[#e7e7e7] w-full rounded-sm' placeholder='Enter caption' ref={caption} />
+              <button className='bg-[#313C3E] w-full rounded-sm text-white p-2 hover:'>Post</button>
+            </form>
+          </>
+        }
       </label>
-    </div>
+    </main>
+
   )
 }
 

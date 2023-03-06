@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import { AiOutlineHome, AiFillHome } from 'react-icons/ai'
+import { AiOutlineHome, AiFillHome, AiOutlinePlusCircle } from 'react-icons/ai'
 import { CgProfile } from 'react-icons/cg'
 import { BiCategory } from 'react-icons/bi'
 import { TbDoorExit } from 'react-icons/tb'
+import { BsFillPlusCircleFill } from 'react-icons/bs'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../actions/auth";
@@ -26,9 +27,15 @@ const Sidebar = () => {
       <ul className='m-5 flex flex-col gap-2 w-full'>
         <Link to="/">
           <li onClick={() => activeBox('home')} className={selected == 'home' ? 'bg-[#252e2f] rounded-xl text-[#cfcfcf] font-bold cursor-pointer text-md p-2 h-12 hover:bg-[#252e2f] hover:rounded-xl flex items-center gap-4' : 'text-[#cfcfcf] cursor-pointer text-md p-2 h-12 hover:bg-[#252e2f] hover:rounded-xl flex items-center gap-4'}>
-            {selected ? <AiFillHome size={25} /> : <AiOutlineHome size={25} />}
+            {selected == 'home' ? <AiFillHome size={25} /> : <AiOutlineHome size={25} />}
 
             <p>Home</p>
+          </li>
+        </Link>
+        <Link to="/share">
+          <li onClick={() => activeBox('upload')} className={selected == 'upload' ? 'bg-[#252e2f] rounded-xl text-[#cfcfcf] font-bold cursor-pointer text-md p-2 h-12 hover:bg-[#252e2f] hover:rounded-xl flex items-center gap-4' : 'text-[#cfcfcf] cursor-pointer text-md p-2 h-12 hover:bg-[#252e2f] hover:rounded-xl flex items-center gap-4'}>
+            <AiOutlinePlusCircle size={25} />
+            <p>Upload</p>
           </li>
         </Link>
         <Link to={`/profile/${currentUser.username}`}>

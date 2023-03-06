@@ -54,9 +54,6 @@ export default function (state = initialState, action) {
       }
 
     case UNFOLLOW:
-      // if (!state.user.followings){
-      //   return state;
-      // }
       state.user.followings = state.user.followings.filter((following) => following !== payload)
       localStorage.setItem("user", JSON.stringify(user))
       return {
