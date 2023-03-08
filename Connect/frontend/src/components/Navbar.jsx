@@ -7,6 +7,7 @@ import { HiOutlinePlus } from 'react-icons/hi'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../actions/auth";
+import people from "../assets/noavatar.png"
 
 const Navbar = ({ searchTerm, setSearchTerm }) => {
     const [toggle, setToggle] = useState(false)
@@ -42,7 +43,7 @@ const Navbar = ({ searchTerm, setSearchTerm }) => {
 
                 <div className='flex items-center justify-between'>
                     <div onClick={() => navigate(`/profile/${currentUser.username}`)} className='flex flex-col items-center bg-[#d5d8d8] rounded-full transition-all'>
-                        <img className='object-cover hover:opacity-75 rounded-full w-12 h-12 border-2' src={currentUser.profilePic} alt="" />
+                        <img className='object-cover hover:opacity-75 rounded-full w-12 h-12 border-2' src={currentUser.profilePic ? currentUser.profilePic : people} alt="" />
                     </div>
                 </div>
             </div>

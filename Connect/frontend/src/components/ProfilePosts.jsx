@@ -32,7 +32,7 @@ const ProfilePosts = ({ post }) => {
   return (
     <>
       <div className='hidden m-1 lg:flex'>
-        <div className="bg-[#313C3E] flex flex-col gap-2 px-3 py-2 shadow-lg rounded-md  lg:w-[350px] lg:h-[350px]">
+        <div className="bg-[#adadad] flex flex-col gap-2 px-3 py-2 shadow-lg rounded-md  lg:w-[350px] lg:h-[350px]">
           {/* <div className='flex items-center justify-between'>
             <div className='flex items-center'>
               <img className='w-10 h-10 object-cover mr-2 rounded-full' src={user.profilePic ? user.profilePic : people} alt="" />
@@ -41,7 +41,7 @@ const ProfilePosts = ({ post }) => {
             <span>{format(post.createdAt)}</span>
           </div> */}
           <div className='h-[300px]'>
-            <img className='w-full object-contain h-full' src={post?.img} alt="" />
+            <img className='w-full object-cover h-full' src={post?.img} alt="" />
           </div>
           <section className='flex items-center h-100 justify-between'>
             <p>{post.desc}</p>

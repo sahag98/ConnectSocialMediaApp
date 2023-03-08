@@ -88,7 +88,7 @@ const Profile = () => {
 
   return (
     <div className='flex flex-col'>
-      <div className='flex flex-col gap-3 justify-center items-center'>
+      <div className='flex flex-col mt-28 gap-3 justify-center items-center'>
         <div className='flex flex-col items-center mt-3'>
           <img className='w-40 h-40 border object-cover rounded-full' src={user.profilePic ? user.profilePic : people} />
           <h1 className='text-center mb-2'>{user.username}</h1>
